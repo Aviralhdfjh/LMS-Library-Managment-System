@@ -5,6 +5,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <fstream>
+#include <cerrno> 
+#include <limits> 
 using namespace std;
 void clrscr() // clear screen
 {
@@ -29,12 +31,13 @@ public:
     void createbook()
     {
         cout << "\nNEW BOOK ENTRY...\n";
-        cout << "\nENTER BOOK NO.";
-        cin >> bno;
-        cout << "\nENTER BOOK NAME";
-        gets(bname); // enables enter with space
-        cout << "\nENTER AUTHOR NAME";
-        gets(aname);
+        cout << "\nENTER BOOK NO. (max 5 chars): ";
+        cin >> setw(6) >> bno;
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+        cout << "\nENTER BOOK NAME (max 49 chars): ";
+        cin.getline(bname, 50);
+        cout << "\nENTER AUTHOR NAME (max 19 chars): ";
+        cin.getline(aname, 20);
         cout << "\n\n\nBook Created..";
     }
     void showbook()
@@ -48,10 +51,13 @@ public:
     void modifybook()
     {
         cout << "\nBook Number: " << bno;
-        cout << "\nModify Book Name :";
-        gets(bname);
-        cout << "\nModify Author's Name :";
-        gets(aname);
+       
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+        cout << "\nModify Book Name (max 49 chars): ";
+        cin.getline(bname, 50);
+        cout << "\nModify Author's Name (max 19 chars): ";
+        cin.getline(aname, 20);
+        
     }
 
     char *retbno() // string return
@@ -83,12 +89,13 @@ public:
     {
         clrscr();
         cout << "\nNEW STUDENT ENTRY...\n";
-        cout << "\nEnter The Admission No. ";
-        cin >> admno;
-        cout << "Enter The Student Name ";
-        gets(name);
-        token = 0;
-        stbno[0] = '\0';
+        cout << "\nEnter The Admission No. (max 5 chars): ";
+        cin >> setw(6) >> admno;
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear the input buffer
+        cout << "Enter The Student Name (max 19 chars): ";
+        cin.getline(name, 20);
+        token=0;
+        stbno[0]='\0';
         cout << "\n\nStudent Record Created...";
     }
     void showstudent()
@@ -105,8 +112,10 @@ public:
     void modifystudent()
     {
         cout << "\nAdmission No. " << admno;
-        cout << "\nModify Student Name : ";
-        gets(name);
+        // Ensure buffer is clean before getline
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+        cout << "\nModify Student Name (max 19 chars): ";
+        cin.getline(name, 20);
     }
     char *retadmno()
     {
@@ -516,10 +525,10 @@ void start()
 void searchBooks()
 {
     clrscr();
-    char searchTerm[50];
+    char searchTerm[51]; // Increased size to 51 for null terminator
     cout << "\n\nSEARCH BOOKS";
     cout << "\n\nEnter Book Name or Author Name to search: ";
-    cin.ignore();
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear buffer before getline
     cin.getline(searchTerm, 50);
 
     fp.open("book.dat", ios::in);
