@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.dbclient-js": "javascript",
+        "*.txt": "bat",
+        "iostream": "cpp",
+        "iomanip": "cpp"
+    }
+}
