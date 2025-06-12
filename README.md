@@ -162,15 +162,4 @@ Manages student-related data and operations.
 11. **SEARCH BOOKS**: Search for books by title or author.
 12. **BACK TO MAIN MENU**: Returns to the main menu.
 
-## Known Issues and Limitations
 
-- **Portability:** The use of `conio.h` (for `getch`, `getche`), `system("cls")`, and the `gotoxy` function (implemented using `windows.h`) makes the application primarily Windows-specific. It may not compile or run correctly on other operating systems without modification.
-- **Input Safety (Buffer Overflows):**
-  - The `gets()` function is used in several places (e.g., `book::createbook`, `book::modifybook`, `student::createstudent`, `student::modifystudent`) to read strings. `gets()` is inherently unsafe as it doesn't perform bounds checking and can lead to buffer overflows if the input is larger than the buffer. This is a security risk.
-  - While `cin >> char_array` for numbers like book/student IDs has been somewhat mitigated with `setw()`, string inputs with spaces using `gets()` remain problematic.
-- **Error Handling:** File opening is checked, but error handling for other file operations (read/write errors) or invalid user inputs could be more robust.
-- **User Experience:** The interface is purely console-based.
-- **Data Validation:** Limited input validation. For example, it doesn't check if a book number or student ID already exists when creating new records (though `ios::app` helps avoid overwriting existing files, uniqueness of IDs within the file is not enforced during creation).
-- **Concurrency:** The system is designed for a single user. Concurrent access to the data files (`book.dat`, `student.dat`) can lead to data corruption.
-- **Fine System:** The fine calculation is basic (Rs. 1 per day after 15 days) and doesn't store issue dates, relying on the user to input the number of days.
-- **File Handling in `deletebook`:** There's a potential bug in `deletebook()` where `fp2.write((char *)&st, sizeof(book));` is used. It should likely be `fp2.write((char *)&bk, sizeof(book));` to write the book object (`bk`) instead of the student object (`st`).
